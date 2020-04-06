@@ -22,6 +22,7 @@ class Place:
         # Will raise urllib.error.HTTPError if state or place not found
 
         self.url = weather_au.PLACES_URL.format(state=state, location=location)
+        print(self.url)
         self.acknowedgment = f'Data courtesy of Bureau of Meteorology ({self.url})'
 
         req = urllib.request.Request(self.url, data=None, headers={'User-Agent': weather_au.PLACES_USER_AGENT})
@@ -45,6 +46,19 @@ class Place:
             return float(temp_node.contents[0][:-3])
         else:
             return None
+
+    def pressure(self):
+        data = []
+        table = self.soup.find('table')
+        
+        rows = table.find_all('tr')
+        #print(rows)
+        for row in rows:
+            cols = row.find_all('td')
+            data.append([ele.text.strip() for ele in cols])
+            #data.append([ele for ele in cols if ele]) # Get rid of empty values
+        
+        return(data[2][0])
 
 
     def forecast(self):
@@ -110,3 +124,9 @@ class Place:
             return station_p.contents[0][4:]
         else:
             return None
+
+
+if __name__ == "__main__":
+    place_data = Place('vic', 'parkville')
+    print(place_data.air_temperature())
+    print(place_data.pressure())
