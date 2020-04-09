@@ -4,11 +4,12 @@ import weather_au
 
 class Observations:
 
-    def __init__(self, state=None):
+    def __init__(self, state):
 
         self.state = state
         self.url = weather_au.OBSERVATION_PRODUCT_URL[state]
         self.soup = weather_au.fetch_xml(self.url)
+        print(self.url)
         self.identifier = self.soup.identifier.contents[0]
         self.acknowedgment = f'Data courtesy of Bureau of Meteorology ({self.url})'
     
@@ -57,3 +58,8 @@ class Observations:
 
     def __str__(self):
         return str(self.soup)
+
+
+if __name__ == "__main__":
+    x = Observations()
+    print(x.air_temperature)
