@@ -55,11 +55,99 @@ class Observations:
 
         return None
 
+    def relative_humidity(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type air_temperature
+        """
 
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            relative_humidity_el = elements.find('element', {'type': 'rel-humidity'})
+
+            if relative_humidity_el is not None and len(relative_humidity_el.contents) > 0:
+                    return relative_humidity_el.contents[0]
+
+        return None
+
+    def wind_dir(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type wind_dir
+        """
+
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            wind_dir_el = elements.find('element', {'type': 'wind_dir'})
+
+            if wind_dir_el is not None and len(wind_dir_el.contents) > 0:
+                    return wind_dir_el.contents[0]
+
+        return None
+
+    def pressure(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type pressure
+        """
+
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            pressure_el = elements.find('element', {'type': 'pres'})
+
+            if pressure_el is not None and len(pressure_el.contents) > 0:
+                    return pressure_el.contents[0]
+
+        return None
+        
+    def wind_dir_deg(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type wind_dir_deg
+        """
+
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            wind_dir_deg_el = elements.find('element', {'type': 'wind_dir_deg'})
+
+            if wind_dir_deg_el is not None and len(wind_dir_deg_el.contents) > 0:
+                    return wind_dir_deg_el.contents[0]
+
+        return None
+
+    def wind_spd_kmh(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type wind_spd_kph
+        """
+
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            wind_spd_kph_el = elements.find('element', {'type': 'wind_spd_kmh'})
+
+            if wind_spd_kph_el is not None and len(wind_spd_kph_el.contents) > 0:
+                    return wind_spd_kph_el.contents[0]
+
+        return None
+
+    def rainfall(self, wmo_id=None):
+        """ Don't assume that any elements exist or that there is an element with type rainfall
+        """
+
+        elements = self.soup.find('station', {'wmo-id': wmo_id})
+
+        if elements is not None:
+            rainfall_el = elements.find('element', {'type': 'rainfall'})
+
+            if rainfall_el is not None and len(rainfall_el.contents) > 0:
+                    return rainfall_el.contents[0]
+
+        return None
     def __str__(self):
         return str(self.soup)
 
 
 if __name__ == "__main__":
-    x = Observations()
-    print(x.air_temperature)
+    x = Observations("Vic")
+    print(x.air_temperature(95936))
+    print(x.relative_humidity(95936))
+    print(x.pressure(95936))
+    print(x.rainfall(95936))
+    print(x.wind_dir(95936))
+    print(x.wind_dir_deg(95936))
+    print(x.wind_spd_kmh(95936))
